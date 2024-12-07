@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/advent_calender_2024.sln"                
+                "${workspaceFolder}/advent_calendar_2024.sln"
             ],
             "problemMatcher": ["$msCompile"]
         }
