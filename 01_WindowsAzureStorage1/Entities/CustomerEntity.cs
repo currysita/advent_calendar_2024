@@ -10,6 +10,6 @@ namespace Entities
     public class CustomerEntity : TableEntity
     {
         public string? CustomerId { get; set; }
-        public DateTime RegisterDate { get; set; }
+        public DateTimeOffset RegisterDate { get; set; }
     }
 }

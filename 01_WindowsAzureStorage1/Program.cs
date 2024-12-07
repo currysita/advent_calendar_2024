@@ -10,15 +10,14 @@ public class Program
         // 主に使うデータを定義しとく
         Guid partitionKey = Guid.Parse("13bb5f6c-dfcf-4cad-a879-c9c02c6ce2aa");
         var rowKey = 0;
-        var CustomerId = "xxx012345";
-        var RegisterDate = DateTime.SpecifyKind(DateTime.Parse("2024-01-01 00:00:00"), DateTimeKind.Local);
-        var dt2 = DateTime.SpecifyKind(RegisterDate, DateTimeKind.Local);
+        var customerId = "xxx012345";
+        var registerDate = DateTimeOffset.Parse("2024-01-01 00:00:00 +00:00");
         // エンティティを生成します
         CustomerEntity customerEntity = new CustomerEntity();
         customerEntity.PartitionKey = partitionKey.ToString();
         customerEntity.RowKey = rowKey.ToString();
-        customerEntity.CustomerId = CustomerId;
-        customerEntity.RegisterDate = RegisterDate;
+        customerEntity.CustomerId = customerId;
+        customerEntity.RegisterDate = registerDate;
 
         // Entityを作成する。この時点ではエンティティもテーブルも存在しない物とする
         customerEntity = customerService.Insert(customerEntity);

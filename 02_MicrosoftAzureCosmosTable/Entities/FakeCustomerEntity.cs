@@ -11,6 +11,6 @@ namespace Entities
     public class FakeCustomerEntity : TableEntity
     {
         public string? CustomerId { get; set; }
-        public DateTime FakeRegisterDate {get; set; }
+        public DateTimeOffset FakeRegisterDate {get; set; }
     }
 }
