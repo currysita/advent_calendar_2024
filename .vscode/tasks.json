@@ -1,0 +1,15 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+        {
+            "label": "dotnet: build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/advent_calender_2024.sln"                
+            ],
+            "problemMatcher": ["$msCompile"]
+        }
+    ]
+}
