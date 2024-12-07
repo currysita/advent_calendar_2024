@@ -17,11 +17,11 @@
         }
         ,
         {
-            "name": "02_WindowsAzureStorage2 Debug",
+            "name": "02_MicrosoftAzureCosmosTable Debug",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "dotnet: build",
-            "program": "${workspaceFolder}/02_WindowsAzureStorage2/bin/Debug/net6.0/02_WindowsAzureStorage2.dll",
+            "program": "${workspaceFolder}/02_MicrosoftAzureCosmosTable/bin/Debug/net6.0/02_MicrosoftAzureCosmosTable.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
