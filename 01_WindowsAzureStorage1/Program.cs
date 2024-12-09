@@ -50,8 +50,8 @@ namespace Adventcalendar2024.WindowsAzureStorage
             // ETagだけ更新してます。
             customerEntity.ETag = mergedEntity.ETag;
             CustomerEntity replacedEntity = customerService.Replace(customerEntity);
-            // // 削除する
-            // CustomerEntity customerEntity5 = customerService.Delete(customerEntity);
+            // 削除する
+            CustomerEntity customerEntity5 = customerService.Delete(customerEntity);
             // もう一回Entityを作成してから、別エンティティで削除する
         }
     }
