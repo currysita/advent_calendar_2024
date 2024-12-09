@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Entities;
+using Adventcalendar2024.MicrosoftAzureCosmosTable.Entities;
 using Microsoft.Azure.Cosmos.Table;
 
-namespace Services
+namespace Adventcalendar2024.MicrosoftAzureCosmosTable.Services
 {
     public class CustomerService
     {
@@ -14,9 +14,9 @@ namespace Services
 
         private string ConnectionString {get; set;}
 
-        public CustomerService(string TableName, string connectionString)
+        public CustomerService(string tableName, string connectionString)
         {
-            TableName = TableName;
+            TableName = tableName;
             ConnectionString = connectionString;
         }
 

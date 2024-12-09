@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos.Table;
 
 
-namespace Entities
+namespace Adventcalendar2024.MicrosoftAzureCosmosTable.Entities
 {
     // テーブルエンティティのクラスを定義します
     public class FakeCustomerEntity : TableEntity
