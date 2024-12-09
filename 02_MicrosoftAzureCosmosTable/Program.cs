@@ -6,7 +6,9 @@ public class Program
 {
     public static void Main()
     {
-        var customerService = new Services.CustomerService();
+        string tableName = "SampleTable02";
+        string connectionString = "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;TableEndpoint=http://127.0.0.1:10002/devstoreaccount1;";
+        var customerService = new CustomerService(tableName, connectionString);
         // 主に使うデータを定義しとく
         Guid partitionKey = Guid.Parse("13bb5f6c-dfcf-4cad-a879-c9c02c6ce2aa");
         var rowKey = 0;

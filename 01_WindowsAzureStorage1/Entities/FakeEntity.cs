@@ -10,9 +10,9 @@ namespace Entities
     /// Replaceの実行用のEntityです。
     /// CustomerEntityには無いプロパティがあります。
     /// </summary>
-    public class FakeCustomerEntity : TableEntity
+    public class FakeEntity : TableEntity
     {
-        public FakeCustomerEntity() { }
+        public FakeEntity() { }
 
         public string? CustomerId { get; set; }
 

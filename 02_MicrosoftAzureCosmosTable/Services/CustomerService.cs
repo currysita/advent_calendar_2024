@@ -9,8 +9,16 @@ namespace Services
 {
     public class CustomerService
     {
-        private string tableName = "SampleTable02";
-        private string ConnectionString = "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;TableEndpoint=http://127.0.0.1:10002/devstoreaccount1;";
+
+        private string TableName {get; set;}
+
+        private string ConnectionString {get; set;}
+
+        public CustomerService(string TableName, string connectionString)
+        {
+            TableName = TableName;
+            ConnectionString = connectionString;
+        }
 
         /// <summary>
         /// Insert エンティティを追加する
@@ -20,7 +28,7 @@ namespace Services
             // テーブルクライアント作成し、テーブル参照を取得します。
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConnectionString);
             var tableClient = storageAccount.CreateCloudTableClient();
-            var table = tableClient.GetTableReference(tableName);
+            var table = tableClient.GetTableReference(TableName);
             
             // 非同期処理で
             Task<bool> createTask = table.CreateIfNotExistsAsync();
@@ -48,7 +56,7 @@ namespace Services
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConnectionString);
             var tableClient = storageAccount.CreateCloudTableClient();
             // テーブル参照を取得します（存在しない場合は作成されます）
-            var table = tableClient.GetTableReference(tableName);
+            var table = tableClient.GetTableReference(TableName);
             // テーブル作成に成功・失敗を判断したい場合は、このようにフラグで結果を取得してください。
             Task<bool> createTask = table.CreateIfNotExistsAsync();
             createTask.Wait();
@@ -84,7 +92,7 @@ namespace Services
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConnectionString);
             var tableClient = storageAccount.CreateCloudTableClient();
             // テーブル参照を取得します
-            var table = tableClient.GetTableReference(tableName);
+            var table = tableClient.GetTableReference(TableName);
             TableOperation operation = TableOperation.Retrieve<CustomerEntity>(partitionKey.ToString(), rowKey.ToString());
 
             // 追加した結果を取得する場合にはこのように。
@@ -104,7 +112,7 @@ namespace Services
         {
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConnectionString);
             var tableClient = storageAccount.CreateCloudTableClient();
-            var table = tableClient.GetTableReference(tableName);
+            var table = tableClient.GetTableReference(TableName);
 
             // 日付を更新
             source.RegisterDate = DateTime.UtcNow;
@@ -123,7 +131,7 @@ namespace Services
         {
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConnectionString);
             var tableClient = storageAccount.CreateCloudTableClient();
-            var table = tableClient.GetTableReference(tableName);
+            var table = tableClient.GetTableReference(TableName);
 
             // 違うEntityに入れ替える
             var customerEntityDummy = new FakeCustomerEntity();
