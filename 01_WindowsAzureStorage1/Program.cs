@@ -1,6 +1,6 @@
 ﻿
-using Entities;
-using Services;
+using Adventcalendar2024.WindowsAzureStorage.Entities;
+using Adventcalendar2024.WindowsAzureStorage.Services;
 using Microsoft.Extensions.Configuration;
 using Adventcalendar2024.WindowsAzureStorage.Configurations;
 
@@ -52,7 +52,6 @@ namespace Adventcalendar2024.WindowsAzureStorage
             CustomerEntity replacedEntity = customerService.Replace(customerEntity);
             // 削除する
             CustomerEntity customerEntity5 = customerService.Delete(customerEntity);
-            // もう一回Entityを作成してから、別エンティティで削除する
         }
     }
 }

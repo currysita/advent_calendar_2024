@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Entities;
+using Adventcalendar2024.WindowsAzureStorage.Entities;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 
-namespace Services
+namespace Adventcalendar2024.WindowsAzureStorage.Services
 {
     public class CustomerService
     {
