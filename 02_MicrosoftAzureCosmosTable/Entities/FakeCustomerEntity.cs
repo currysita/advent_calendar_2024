@@ -8,9 +8,9 @@ using Microsoft.Azure.Cosmos.Table;
 namespace Adventcalendar2024.MicrosoftAzureCosmosTable.Entities
 {
     // テーブルエンティティのクラスを定義します
-    public class FakeCustomerEntity : TableEntity
+    public class FakeEntity : TableEntity
     {
         public string? CustomerId { get; set; }
-        public DateTimeOffset FakeRegisterDate {get; set; }
+        public DateTimeOffset? FakeRegisterDate {get; set; }
     }
 }

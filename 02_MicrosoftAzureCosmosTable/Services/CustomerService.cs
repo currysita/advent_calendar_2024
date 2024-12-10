@@ -37,47 +37,11 @@ namespace Adventcalendar2024.MicrosoftAzureCosmosTable.Services
             // まあ失敗したらほぼ例外が発生しますので、あんまり使う事無いと思います。
             bool isCreateSuccess = createTask.Result;
 
+            // Microsoft.WindowsAzure.Storage の頃と違って、同期処理ができる！
             TableOperation operation = TableOperation.Insert(entity);
-
-            // 追加した結果を取得する場合にはこのように。
-            Task<TableResult> task = table.ExecuteAsync(operation);
-            task.Wait();
-            TableResult tableResult = task.Result;
+            TableResult tableResult = table.Execute(operation);
 
             return (CustomerEntity)tableResult.Result;
-        }
-        
-        /// <summary>
-        /// Insert エンティティを追加する
-        /// </summary>
-        public CustomerEntity Insert(Guid partitionKey, int rowKey)
-        {
-            // テーブルクライアント作成
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConnectionString);
-            var tableClient = storageAccount.CreateCloudTableClient();
-            // テーブル参照を取得します（存在しない場合は作成されます）
-            var table = tableClient.GetTableReference(TableName);
-            // テーブル作成に成功・失敗を判断したい場合は、このようにフラグで結果を取得してください。
-            Task<bool> createTask = table.CreateIfNotExistsAsync();
-            createTask.Wait();
-            bool isCreateSuccess = createTask.Result;
-            // 新しいエンティティを作成し、挿入します。
-            CustomerEntity entity = 
-                new CustomerEntity()
-            {
-                PartitionKey = partitionKey.ToString(),
-                RowKey = rowKey.ToString(),
-                CustomerId = "xxx012345",
-                RegisterDate = DateTime.UtcNow
-            };
-            TableOperation operation = TableOperation.Insert(entity);
-
-            // 追加した結果を取得する場合にはこのように。
-            Task<TableResult> task = table.ExecuteAsync(operation);
-            task.Wait();
-            TableResult tableInsertResult = task.Result;
-
-            return (CustomerEntity)tableInsertResult.Result;
         }
 
         /// <summary>
@@ -96,11 +60,23 @@ namespace Adventcalendar2024.MicrosoftAzureCosmosTable.Services
             TableOperation operation = TableOperation.Retrieve<CustomerEntity>(partitionKey.ToString(), rowKey.ToString());
 
             // 追加した結果を取得する場合にはこのように。
-            Task<TableResult> task = table.ExecuteAsync(operation);
-            task.Wait();
-            TableResult tableResult = task.Result;
+            TableResult tableResult = table.Execute(operation);
 
             return (CustomerEntity)tableResult.Result;
+        }
+
+        /// <summary>
+        /// 別のEntityを使用してマージする。既存のカラムが残る
+        /// </summary>
+        public FakeEntity Merge(FakeEntity fakeCustomerEntity)
+        {
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConnectionString);
+            var tableClient = storageAccount.CreateCloudTableClient();
+            var table = tableClient.GetTableReference(TableName);
+
+            TableOperation operation = TableOperation.Merge(fakeCustomerEntity);
+            TableResult tableResult = table.Execute(operation);
+            return (FakeEntity)tableResult.Result;
         }
 
         /// <summary>
@@ -114,37 +90,24 @@ namespace Adventcalendar2024.MicrosoftAzureCosmosTable.Services
             var tableClient = storageAccount.CreateCloudTableClient();
             var table = tableClient.GetTableReference(TableName);
 
-            // 日付を更新
-            source.RegisterDate = DateTime.UtcNow;
-
             TableOperation operation = TableOperation.Replace(source);
-            Task<TableResult> task = table.ExecuteAsync(operation);
-            task.Wait();
-            TableResult result = task.Result;
-            return (CustomerEntity)result.Result;
+            TableResult tableResult = table.Execute(operation);
+            return (CustomerEntity)tableResult.Result;
         }
 
-        /// <summary>
-        /// Entityを更新する。違うEntityを使用している。
+        /// <summary>]
+        /// エンティティを削除する 
         /// </summary>
-        public FakeCustomerEntity Replace2(CustomerEntity source)
+        public CustomerEntity Delete(CustomerEntity source)
         {
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConnectionString);
             var tableClient = storageAccount.CreateCloudTableClient();
             var table = tableClient.GetTableReference(TableName);
 
-            // 違うEntityに入れ替える
-            var customerEntityDummy = new FakeCustomerEntity();
-            customerEntityDummy.PartitionKey = source.PartitionKey;
-            customerEntityDummy.ETag = source.ETag;
-            customerEntityDummy.CustomerId = source.CustomerId;
-            customerEntityDummy.FakeRegisterDate = source.RegisterDate;
-
-            TableOperation operation = TableOperation.Replace(source);
-            Task<TableResult> task = table.ExecuteAsync(operation);
-            task.Wait();
-            TableResult result = task.Result;
-            return (FakeCustomerEntity)result.Result;
+            TableOperation operation = TableOperation.Delete(source);
+            TableResult tableResult = table.Execute(operation);
+            return (CustomerEntity)tableResult.Result;
         }
+
     }
 }

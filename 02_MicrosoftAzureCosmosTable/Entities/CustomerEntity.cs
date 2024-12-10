@@ -11,6 +11,6 @@ namespace Adventcalendar2024.MicrosoftAzureCosmosTable.Entities
     public class CustomerEntity : TableEntity
     {
         public string? CustomerId { get; set; }
-        public DateTimeOffset RegisterDate { get; set; }
+        public DateTimeOffset? RegisterDate { get; set; }
     }
 }

@@ -15,36 +15,49 @@ namespace Adventcalendar2024.MicrosoftAzureCosmosTable
                 .AddJsonFile("appsettings.json")
                 .Build();
             AppSettings appSettings = configuration.Get<AppSettings>() ?? new AppSettings();
-            string tableName = "SampleTable2";
+            var tableName = "SampleTable2";
+
             var customerService = new CustomerService(
                     tableName, appSettings.ConnectionStrings.AzureStorageTableConnectionString);
-            // 主に使うデータを定義しとく
+                    
+            // 適当なデータでエンティティを生成します
             Guid partitionKey = Guid.Parse("13bb5f6c-dfcf-4cad-a879-c9c02c6ce2aa");
             var rowKey = 0;
             var customerId = "xxx012345";
             var registerDate = DateTimeOffset.Parse("2024-01-01 00:00:00 +00:00");
-            // エンティティを生成します
+            // エンティティの挿入
             CustomerEntity customerEntity = new CustomerEntity();
             customerEntity.PartitionKey = partitionKey.ToString();
             customerEntity.RowKey = rowKey.ToString();
             customerEntity.CustomerId = customerId;
             customerEntity.RegisterDate = registerDate;
-            // Entityを作成する。この時点ではエンティティもテーブルも存在しない物とする
             customerEntity = customerService.Insert(customerEntity);
-            // 取得する。
-            CustomerEntity customerEntity2 = customerService.Retrieve(partitionKey, rowKey);
-            // // カラムが異なるEntityで Replace する
-            // FakeCustomerEntity FakeCustomerEntity = customerService.Replace(customerEntity);
-            // // 元のエンティティに戻す。
-            // customerEntity = customerService.Replace2(customerEntityReplace);
-            // // 自作のエンティティクラスを使わずにPartitionKeyとRowKeyのみで取得する
-            // var dynamicTableEntity = customerService.RetrieveDynamic(customerEntity);
-            // // RegisterDateTime を null で更新する
-            // dynamicTableEntity = customerService.ReplaceDynamicTableEntity(dynamicTableEntity);
-            // // もう一度DynamicTableEntityで検索する。RegisterDateTimeはnullとなっている。
-            // dynamicTableEntity = customerService.RetrieveDynamic(customerEntity);
-            // // もう一度検索。存在しないプロパティを検索すると、nullで帰ってくる。
-            // dynamicTableEntity = customerService.RetrieveDynamicFakeProperty(customerEntity);
+
+            // エンティティの取得
+            CustomerEntity retrieveEntity = customerService.Retrieve(partitionKey, rowKey);
+
+            // エンティティのマージ
+            var fakeEntity = new FakeEntity();
+            fakeEntity.PartitionKey = retrieveEntity.PartitionKey;
+            fakeEntity.RowKey = retrieveEntity.RowKey;
+            fakeEntity.ETag = retrieveEntity.ETag;
+            fakeEntity.CustomerId = retrieveEntity.CustomerId;
+            fakeEntity.FakeRegisterDate = retrieveEntity.RegisterDate;
+            FakeEntity mergedEntity = customerService.Merge(fakeEntity);
+
+            // Insertした時と同じEntityでReplaceします。
+            // ETagだけ更新してます。ETagの例="W/"datetime'2024-12-10T00%3A25%3A12.7987294Z'"
+            customerEntity.ETag = mergedEntity.ETag;
+            CustomerEntity replacedEntity = customerService.Replace(customerEntity);
+            
+            // 削除します。
+            CustomerEntity deletedEntity = customerService.Delete(customerEntity);
+            // もう一度挿入した上で、いくつかの情報を削除してから削除を実行してみます。
+            // partitionKey、rowkey、ETagさえあれば削除が可能であることが解ります。
+            customerEntity = customerService.Insert(customerEntity);
+            customerEntity.CustomerId = null;
+            customerEntity.RegisterDate = null;
+            CustomerEntity deletedEntity2 = customerService.Delete(customerEntity);
         }
     }
 }
