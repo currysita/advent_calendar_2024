@@ -10,6 +10,6 @@ namespace Adventcalendar2024.WindowsAzureStorage.Entities
     public class CustomerEntity : TableEntity
     {
         public string? CustomerId { get; set; }
-        public DateTimeOffset RegisterDate { get; set; }
+        public DateTimeOffset? RegisterDate { get; set; }
     }
 }

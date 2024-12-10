@@ -16,6 +16,6 @@ namespace Adventcalendar2024.WindowsAzureStorage.Entities
 
         public string? CustomerId { get; set; }
 
-        public DateTimeOffset FakeRegisterDate {get; set; }
+        public DateTimeOffset? FakeRegisterDate {get; set; }
     }
 }

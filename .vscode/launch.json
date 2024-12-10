@@ -5,11 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "01_WindowsAzureStorage1 Debug",
+            "name": "01_WindowsAzureStorage Debug",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "dotnet: build",
-            "program": "${workspaceFolder}/01_WindowsAzureStorage1/bin/Debug/net6.0/01_WindowsAzureStorage1.dll",
+            "program": "${workspaceFolder}/01_WindowsAzureStorage/bin/Debug/net6.0/01_WindowsAzureStorage.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,

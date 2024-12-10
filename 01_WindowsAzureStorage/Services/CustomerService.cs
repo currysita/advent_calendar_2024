@@ -39,6 +39,7 @@ namespace Adventcalendar2024.WindowsAzureStorage.Services
             TableOperation operation = TableOperation.Insert(entity);
 
             // 追加した結果を取得する場合にはこのように。
+            // table.ExecuteAsync(operation);
             Task<TableResult> task = table.ExecuteAsync(operation);
             task.Wait();
             TableResult tableResult = task.Result;
